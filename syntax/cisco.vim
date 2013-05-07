@@ -13,7 +13,6 @@ setlocal iskeyword+=:
 setlocal iskeyword+=.
 setlocal iskeyword+=-
 
-
 syn match ciscoComment  "^\s*!.*$"
 hi def link ciscoComment Comment
 
@@ -29,18 +28,20 @@ hi def link ciscoWord String
 syn region ciscoUsernames start=+^username\s+ skip=+^username\s+ end=+^\S+me=s-1 fold
 syn region ciscoIpHosts start=+^ip host\s+ skip=+^ip host\s+ end=+^\S+me=s-1 fold
 
-
 syn region ciscoInterfaces start=+^interface\s+ skip=+^\(!\n\)\?interface\s+ end=+^\S+me=s-1 fold contains=ciscoInterfaceRegion
-syn region ciscoInterfaceRegion contained start=+^interface\s+ end=+^\S+me=s-1 fold contains=ciscoip,ciscoip6,ciscoIfName,ciscoComment
-
+syn region ciscoInterfaceRegion contained start=+^interface\s+ end=+^\S+me=s-1 fold contains=ciscoip,ciscoip6,ciscoIfName,ciscoComment,ciscoInterfaceKeywords,ciscoInterfaceOperator,ciscoInterfaceIdentifiers
+syn keyword ciscoInterfaceKeywords contained skipwhite ip ipv6 glbp description encapsulation
+hi def link ciscoInterfaceKeywords Keyword
+syn keyword ciscoInterfaceIdentifiers contained skipwhite access-group traffic-filter priority weighting load-balancing dot1Q ospf address
+hi def link ciscoInterfaceIdentifiers Identifier
+syn keyword ciscoInterfaceOperator contained skipwhite in out no preempt enable
+hi def link ciscoInterfaceOperator Special
 
 syn region ciscoRouters start=+^router\s+ skip=+^\(!\n\)\?router\s+ end=+^\S+me=s-1 fold contains=ciscoRouterRegion
 syn region ciscoRouterRegion start=+^router\s+ end=+^\S+me=s-1 contained fold contains=ciscoip,ciscoip6,ciscoIfName,ciscoComment
 
-
 syn region ciscoIpRoutes start=+^ip route\s+ end=+^\(ip route\)\@!+me=s-1 fold contains=ciscoIpRoute
 syn match ciscoIpRoute +^ip route.*$+ contained skipwhite contains=ciscoip,ciscoip6,ciscoNumber,ciscoIfName
-
 
 syn region ciscoIpAccessLists start=+^ip access-list\s+ skip=+^\(!\n\)\?ip access-list\s+ end=+^\S+me=s-1 fold contains=ciscoIpAccessList
 syn region ciscoIpAccessList contained start=+^ip access-list\s+ end=+^\S+me=s-1 fold contains=ciscoIpAccessListNamed,ciscoip,ciscoip6,ciscoIfName,ciscoComment,ciscoAclKeywords,ciscoAclOperator
@@ -53,10 +54,8 @@ hi def link ciscoAclOperator Special
 syn region ciscoAccessLists start=+^access-list\s+ skip=+^access-list\s+ end=+^\S+me=s-1 fold contains=ciscoAccessList
 syn region ciscoAccessList start=+^access-list \z(\d\+\)\ + skip=+^access-list \z1 + end=+^\S+me=s-1 contained fold contains=ciscoip,ciscoip6,ciscoIfName
 
-
 syn region ciscoRouteMaps start=+^route-map\s+ skip=+^\(!\n\)\?route-map\s+ end=+^\S+me=s-1 fold contains=ciscoRouteMap
 syn region ciscoRouteMap contained start=+^route-map\s+ end=+^\S+me=s-1 fold contains=ciscoip,ciscoip6,ciscoIfName,ciscoComment
-
 
 syn region ciscoCryptoIsakmp start=+^crypto isakmp\s+ end=+^\S+me=s-1 fold
 
